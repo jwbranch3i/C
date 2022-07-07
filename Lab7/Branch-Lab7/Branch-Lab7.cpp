@@ -15,18 +15,18 @@ using namespace std;
 
 struct Student
 {
-	string fname;
-	string lname;
+	string name;
 	double midterm;
 	double final_exam;
 	double labs[4];
 	double final_score;
+	string letter_grade;
 };
 
 const int NUMSTUDENTS = 24;
 // declare function prototype 
-double calculateGrade(Student&, int);
-void getData(ifstream& inFile&, Student& students[], int& numStudent);
+void calculateGrade(Student);
+Student getData(ifstream&);
 
 
 int main()
@@ -46,8 +46,12 @@ int main()
 		return 1;
 	}
 
-	getData(inFile, students, numStudent);
+	while (inFile)
+	{
+		newStudent = getData(inFile);
 
+		cout << newStudent.name << endl;
+	}
 
 
 	/*	while (inFile)
@@ -73,42 +77,42 @@ int main()
 
 
 		}
-	// close the data file, write your code here
-	………
+	// close the data file, write your code here  */
 
 
-		for (int i = 0; i < numStudent; i++)
-		{
-			// determine each student’s letter grade (A, B, C, D or F) write your code here
-			………
-
-
-				// display each student’s name, final score and final grade 
-					// according to the expected output, write your code here
-				………
-
-
-		}   */
 	return 0;
 }
 
-void calculateGrade(Student& students, int numStudent)
-	{
-		// calculate and return student’s final numeric score, write your code here
-	………
-
-
-
-	}
-
-void getData(ifstream& inFile, Student& students, int& numStudent)
+double calculateGrade(Student students)
 {
-	while (inFile)
+	double final_grade;
+	double lab_ave;
+	double lab_total;
+
+	for (int i = 0, i < 4, i++)
 	{
-		inFile >> students[numStudent].fname >> students[numStudent].lname;
-		inFile >> students[numStudent].midterm >> students[numStudent].final_exam;
-		inFile >> students[numStudent].labs[0] >> students[numStudent].labs[1] >> students[numStudent].labs[2]
-			   >> students[numStudent].labs[3];
-		numStudent++;
+		lab_total += students.labs[i];
 	}
+
+	lab_ave = (students.final_exam * .25) + (students.midterm * .25) + (lab_total * .5);
+
+	return lab_ave;
+}
+
+Student getData(ifstream& inFile)
+{
+	Student newStudent;
+	string trash;
+
+	getline(inFile, newStudent.name);
+
+	inFile >> newStudent.midterm >> newStudent.final_exam;
+
+	inFile >> newStudent.labs[0] >> newStudent.labs[1]
+			>> newStudent.labs[2]
+			>> newStudent.labs[3];
+
+	inFile >> trash;
+
+	return newStudent;
 }
