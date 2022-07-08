@@ -23,20 +23,25 @@ struct Student
 	string letter_grade;
 };
 
-const int NUMSTUDENTS = 24;
+const int MAXSTUDENTS = 24;
+
 // declare function prototype 
-void calculateGrade(Student);
+double calculateGrade(Student);
 Student getData(ifstream&);
+string lGrade(double);
 
 
 int main()
 {
 	// declare all variables
 	Student newStudent;
-	Student students[24];
-	int numStudent = 0;
+	Student students[MAXSTUDENTS];
+
 	ifstream inFile;
-	char letterGrade = ' ';
+
+	int numStudent = 0;
+
+	double grade;
 
 	// open the data file and check whether the file cannot be found
 	inFile.open("students.txt");
@@ -46,57 +51,60 @@ int main()
 		return 1;
 	}
 
-	while (inFile)
+	while (inFile && numStudent < MAXSTUDENTS)
 	{
 		newStudent = getData(inFile);
+		newStudent.final_score = calculateGrade(newStudent);
+		newStudent.letter_grade = lGrade(newStudent.final_score);
 
-		cout << newStudent.name << endl;
+		students[numStudent] = newStudent;
+		numStudent++;
 	}
 
+	for (int i = 0; i < numStudent; i++)
+	{
+		cout << students[i].name << "'s final grade is ";
+		cout << students[i].final_score << "% (grade: ";
+		cout << students[i].letter_grade << ")" << endl;
+	}
 
-	/*	while (inFile)
-		{
-			// call calculateGrade function to calculate student’s final numeric score 
-				// and update student’s record, write your code here
-			………
-
-
-				// store the current student record in the students array and update numStudent
-				// write your code here
-				………
-
-
-				// ignore the ‘\n’ at the end of current student record in the data file 
-					// before reading next student record, write your code here
-				………
-
-
-
-				// read next student record, write your code here
-				………
-
-
-		}
-	// close the data file, write your code here  */
-
-
+	inFile.close();
 	return 0;
+}
+
+string lGrade(double score)
+{
+	string grade;
+
+	if (score >= 90)
+		grade = 'A';
+	else if (score >= 80)
+		grade = 'B';
+	else if (score >= 70)
+		grade = 'C';
+	else if (score >= 60)
+		grade = 'D';
+	else
+		grade = 'F';
+
+	return grade;
 }
 
 double calculateGrade(Student students)
 {
 	double final_grade;
 	double lab_ave;
-	double lab_total;
+	double lab_total = 0;
 
-	for (int i = 0, i < 4, i++)
+	for (int i = 0; i < 4; i++)
 	{
 		lab_total += students.labs[i];
 	}
+	lab_ave = lab_total / 4;
 
-	lab_ave = (students.final_exam * .25) + (students.midterm * .25) + (lab_total * .5);
+	final_grade = ((students.final_exam * .25) + (students.midterm * .25) + (lab_ave * .5));
 
-	return lab_ave;
+	return final_grade;
 }
 
 Student getData(ifstream& inFile)
@@ -107,12 +115,12 @@ Student getData(ifstream& inFile)
 	getline(inFile, newStudent.name);
 
 	inFile >> newStudent.midterm >> newStudent.final_exam;
-
+	inFile.ignore();
 	inFile >> newStudent.labs[0] >> newStudent.labs[1]
 			>> newStudent.labs[2]
 			>> newStudent.labs[3];
 
-	inFile >> trash;
+	inFile.ignore();
 
 	return newStudent;
 }
