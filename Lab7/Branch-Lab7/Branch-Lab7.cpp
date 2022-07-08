@@ -26,7 +26,7 @@ struct Student
 const int MAXSTUDENTS = 24;
 
 // declare function prototype 
-double calculateGrade(Student);
+double calculateGrade(Student&);
 Student getData(ifstream&);
 string lGrade(double);
 
@@ -41,8 +41,6 @@ int main()
 
 	int numStudent = 0;
 
-	double grade;
-
 	// open the data file and check whether the file cannot be found
 	inFile.open("students.txt");
 	if (!inFile)
@@ -53,9 +51,9 @@ int main()
 
 	while (inFile && numStudent < MAXSTUDENTS)
 	{
-		newStudent = getData(inFile);
-		newStudent.final_score = calculateGrade(newStudent);
-		newStudent.letter_grade = lGrade(newStudent.final_score);
+		newStudent = getData(inFile);  //read one student data
+		newStudent.final_score = calculateGrade(newStudent);   // calculate final score
+		newStudent.letter_grade = lGrade(newStudent.final_score);  // determine letter grade
 
 		students[numStudent] = newStudent;
 		numStudent++;
@@ -72,6 +70,21 @@ int main()
 	return 0;
 }
 
+///////////////////////////////////////////////////////////////////////////
+// Functon: lGrade   
+// Date: July 7 2022
+// Programmer: John Branch
+// 
+// Description:
+//		This program determins a letter grade based on the input score
+// 
+// Parameters:
+//		double - grade (0 - 100)
+// 
+// Returns:
+//		string - letter grade
+// 
+///////////////////////////////////////////////////////////////////////////
 string lGrade(double score)
 {
 	string grade;
@@ -90,7 +103,22 @@ string lGrade(double score)
 	return grade;
 }
 
-double calculateGrade(Student students)
+///////////////////////////////////////////////////////////////////////////
+// Functon: calculateGrede
+// Date: July 7 2022
+// Programmer: John Branch
+// 
+// Description:
+//		This program calculates the weighted average for a student
+// 
+// Parameters:
+//		Student - (by reference) student information in a Student structure
+// 
+// Returns:
+//		double - calculated average
+// 
+///////////////////////////////////////////////////////////////////////////
+double calculateGrade(Student& students)
 {
 	double final_grade;
 	double lab_ave;
@@ -107,6 +135,21 @@ double calculateGrade(Student students)
 	return final_grade;
 }
 
+///////////////////////////////////////////////////////////////////////////
+// Functon: getData
+// Date: July 7 2022
+// Programmer: John Branch
+// 
+// Description:
+//		This program reads student information from a input stream
+// 
+// Parameters:
+//		ifstream - (by reference) input stream
+// 
+// Returns:
+//		Student - Student structure with student information
+// 
+///////////////////////////////////////////////////////////////////////////
 Student getData(ifstream& inFile)
 {
 	Student newStudent;
@@ -124,3 +167,4 @@ Student getData(ifstream& inFile)
 
 	return newStudent;
 }
+ 
