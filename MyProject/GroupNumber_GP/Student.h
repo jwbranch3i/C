@@ -7,7 +7,7 @@ class Student
 {
 	public:
 		Student();
-		Student(string, string, string);
+		Student(string, string, string, double, double, double, double);
 		~Student();
 		string getFirstName();
 		string getLastName();

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include "Student.h"
 
@@ -18,13 +19,13 @@ Student::Student()
 	ssNumber = "";
 }
 
-Student::Student(string fname, string lname, string ssNum)
+Student::Student(string fname, string lname, string ssNum, double score1, double score2, double score3, double score4)
 {
 	numStudents++;
-	for (int i = 0; i < 4; i++)
-	{
-		examScores[i] = 0;
-	}
+	examScores[0] = score1;
+	examScores[1] = score2;
+	examScores[2] = score3;
+	examScores[3] = score4;
 
 	setFirstName(fname);
 	setLastName(lname);
@@ -88,6 +89,7 @@ void Student::setScores(double score[])
 	score[3] = examScores[3];
 }
 
+
 double Student::aveScore()
 {
 	double total = 0;
@@ -101,9 +103,14 @@ double Student::aveScore()
 
 void Student::studentInfo()
 {
-
+	cout << fixed << setprecision(2);
 	cout << lastName << "  " ;
 	cout << firstName << "  ";
-	cout << ssNumber << "  " << "\n";
+	cout << ssNumber << "  ";
+	cout << examScores[0] << "  ";
+	cout << examScores[1] << "  ";
+	cout << examScores[2] << "  ";
+	cout << examScores[3] << "  " << aveScore() << "\n";
 
 }
+
