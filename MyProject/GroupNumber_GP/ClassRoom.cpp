@@ -64,6 +64,7 @@ void ClassRoom::readStudents()
 		count++;
 	}
 	numStudents += count - 1;
+    inFile.close();
 }
 
 void ClassRoom::listStudents()
